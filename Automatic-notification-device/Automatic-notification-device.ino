@@ -61,42 +61,40 @@ char *working_date[][4] = {
 
 // Mang is hour working date - Gio ngay chi dinh lam viec - gio ngay lam bu. localNoteArray = 1
 char *time_working_date[][5] = {
-  {0, 30, 5, "BT sang", "0"},
-  {0, 10, 6, "An sang", "2"},
-  {0, 0, 7, "Lam viec sang", "7"},
-  {0, 0, 11, "Het lam viec", "8"},
-  {0, 10, 11, "An trua", "3"},
-  {0, 15, 13, "BT chieu", "0"},
-  {0, 30, 13, "Lam viec chieu", "7"},
-  {0, 30, 16, "Het lam viec", "8"},
-  {0, 30, 17, "An chieu", "4"},
-  {0, 45, 20, "Diem danh", "5"},
-  {0, 30, 17, "Het the thao", "6"},
-  {0, 0, 18, "Ha Co", "7"},
-  {0, 0, 19, "Xem thoi su", "8"},
-  {30, 32, 10, "PHUONG ANH 1", 1},
-  {0, 36, 10, "PHUONG ANH 2", 2},
-  {0, 37, 10, "PHUONG ANH 3", 3},
+  {0, 30, 5, "BT sang", 1},
+  {0, 10, 6, "An sang", 2},
+  {0, 0, 7, "Lam viec sang", 3},
+  {0, 0, 11, "Het lam viec", 4},
+  {0, 10, 11, "An trua", 2},
+  {0, 15, 13, "BT chieu", 1},
+  {0, 30, 13, "Lam viec chieu", 3},
+  {0, 30, 16, "Het lam viec", 4},
+  {0, 30, 17, "An chieu", 2},
+  {0, 45, 20, "Diem danh", 5},
+  // TEST
+  // {20, 17, 14, "PHUONG ANH 5", 5},
+  // {20, 18, 14, "PHUONG ANH 1", 1},
+  // {20, 19, 14, "PHUONG ANH 3", 3},
 };
 
 // Mang is a date off - Ngay chi dinh nghi - ngay le. localNoteArray = 2
 char *date_off[][4] = {
   {0, 0, 0, "Ngay nghi"},
-  {21, 4, 2021, "Gio To 10/3 al"},
-  {3, 5, 2021, "Nghi bu 1/5"},
-  {2, 9, 2021, "Quoc khanh"},
-  {3, 9, 2021, "Quoc khanh"},
-  {3, 1, 2022, "Nghi bu 1/1"},
+  {30, 4, 2021, "NGHI LE"},
+  {3, 5, 2021, "NGHI BU 1/5"},
+  {2, 9, 2021, "QUOC KHANH"},
+  {3, 9, 2021, "QUOC KHANH"},
+  {3, 1, 2022, "NGHI BU 1/1"},
 };
 // Mang is hour date off - Gio ngay chi dinh nghi - gio ngay le. localNoteArray = 3
 char *time_date_off[][5] = {
-  {0, 0, 6, "BT sang", "0"},
-  {0, 0, 14, "BT chieu", "0"},
-  {0, 30, 6, "An sang", "2"},
-  {0, 30, 10, "An trua", "3"},
-  {0, 30, 17, "An chieu", "4"},
-  {0, 45, 20, "Diem danh", "5"},
-
+  {0, 0, 6, "BT sang", 1},
+  {0, 0, 14, "BT chieu", 1},
+  {0, 30, 6, "An sang", 2},
+  {0, 30, 10, "An trua", 2},
+  {0, 30, 17, "An chieu", 2},
+  {0, 45, 20, "Diem danh", 5},
+  // TEST
   {10, 50, 18, "Test1", "5"},
   {20, 50, 19, "Test2", "5"},
   {30, 50, 20, "Test3", "5"},
@@ -109,8 +107,9 @@ int is_broadcast_time_working_date(int seconds, int minute, int hour);
 int is_a_date_off(int date, int mouth, int year);
 int is_broadcast_time_date_off(int seconds, int minute, int hour);
 void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmonth, int month, int year, int note, int localNoteArray);
-void printDetail(uint8_t type, int value);
 // end functions
+
+int maxFiles = 0;
 
 void setup() {
   mySoftwareSerial.begin(9600);
@@ -126,7 +125,7 @@ void setup() {
   delay(500);
   
   //----Set volume----
-  myDFPlayer.volume(5);  //Set volume value (0~30).
+  myDFPlayer.volume(15);  //Set volume value (0~30).
   delay(500);
 //  myDFPlayer.volumeUp(); //Volume Up
 //  myDFPlayer.volumeDown(); //Volume Down
@@ -138,28 +137,10 @@ void setup() {
   //----Set device we use SD as default----
 //  myDFPlayer.outputDevice(DFPLAYER_DEVICE_U_DISK);
   myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
-  delay(500);  
-  
-  //----Mp3 play----
-//  myDFPlayer.play(3);  //Play next mp3
-//  delay(1000);
-//  myDFPlayer.next();  //Play next mp3
-//  delay(1000);
-//  myDFPlayer.previous();  //Play previous mp3
-//  delay(1000);
-  // myDFPlayer.loop(3);  //Play the first mp3
-//  delay(1000);
-//  myDFPlayer.loop(1);  //Loop the first mp3
-//   delay(1000);
-//  myDFPlayer.pause();  //pause the mp3
-  // delay(1000);
-//  myDFPlayer.start();  //start the mp3 from the pause
-//  delay(1000);
-//  myDFPlayer.stop();  //stop the mp3
-//  delay(1000);
-//  myDFPlayer.loop(3);  // Play song 3
-//  delay(3000);
-  
+  delay(500); 
+
+  maxFiles = myDFPlayer.readFileCounts(); 
+    
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC)) {
     // Serial.println(F("SSD1306 allocation failed"));
@@ -172,7 +153,8 @@ void setup() {
   // Clear the buffer
   display.clearDisplay();
   // Dat thoi gian ban dau
-  // myRTC.setDS1302Time(10, 13, 10, 3, 27, 4, 2021);
+  // Lech 28s
+  // myRTC.setDS1302Time(50, 38, 14, 5, 29, 4, 2021);
 }
 
 void loop() {
@@ -279,15 +261,13 @@ displayTime(seconds, minutes, hours, dayofweek, dayofmonth, month, year, note, l
   switch (indexPlay)
   {
   case 1:
-    int songLocal1 = time_working_date[note][4];
-    myDFPlayer.playFolder(01, songLocal1);  //Play next mp3
-    delay(1000);
+    int nextFile1 = time_working_date[note][4];
+    myDFPlayer.play(nextFile1);
     break;
   
   case 3:
-    int songLocal2 = time_date_off[note][4];
-    myDFPlayer.playFolder(01, songLocal2);  //Play next mp3
-    delay(1000);
+    int nextFile2 = time_date_off[note][4];
+    myDFPlayer.play(nextFile2);
     break;
   
   default:
@@ -424,66 +404,4 @@ void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmo
 
   display.display();
   delay(100);
-}
-
-void printDetail(uint8_t type, int value){
-  switch (type) {
-    case TimeOut:
-      // Serial.println(F("Time Out!"));
-      break;
-    case WrongStack:
-      // Serial.println(F("Stack Wrong!"));
-      break;
-    case DFPlayerCardInserted:
-      // Serial.println(F("Card Inserted!"));
-      break;
-    case DFPlayerCardRemoved:
-      // Serial.println(F("Card Removed!"));
-      break;
-    case DFPlayerCardOnline:
-      // Serial.println(F("Card Online!"));
-      break;
-    case DFPlayerUSBInserted:
-      // Serial.println("USB Inserted!");
-      break;
-    case DFPlayerUSBRemoved:
-      // Serial.println("USB Removed!");
-      break;
-    case DFPlayerPlayFinished:
-      // Serial.print(F("Number:"));
-      // Serial.print(value);
-      // Serial.println(F(" Play Finished!"));
-      break;
-    case DFPlayerError:
-      // Serial.print(F("DFPlayerError:"));
-      switch (value) {
-        case Busy:
-          // Serial.println(F("Card not found"));
-          break;
-        case Sleeping:
-          // Serial.println(F("Sleeping"));
-          break;
-        case SerialWrongStack:
-          // Serial.println(F("Get Wrong Stack"));
-          break;
-        case CheckSumNotMatch:
-          // Serial.println(F("Check Sum Not Match"));
-          break;
-        case FileIndexOut:
-          // Serial.println(F("File Index Out of Bound"));
-          break;
-        case FileMismatch:
-          // Serial.println(F("Cannot Find File"));
-          break;
-        case Advertise:
-          // Serial.println(F("In Advertise"));
-          break;
-        default:
-          break;
-      }
-      break;
-    default:
-      break;
-  }
-  
 }

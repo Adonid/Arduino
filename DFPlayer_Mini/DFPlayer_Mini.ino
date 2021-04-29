@@ -27,7 +27,7 @@ SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
 
-int index = 1;
+int maxFiles = 0;
 
 void setup()
 {
@@ -50,7 +50,7 @@ void setup()
   delay(500);
   
   //----Set volume----
-  myDFPlayer.volume(5);  //Set volume value (0~30).
+  myDFPlayer.volume(25);  //Set volume value (0~30).
   delay(500);
 //  myDFPlayer.volumeUp(); //Volume Up
 //  myDFPlayer.volumeDown(); //Volume Down
@@ -80,37 +80,46 @@ void setup()
 //  myDFPlayer.outputSetting(true, 15); //output setting, enable the output and set the gain to 15
   
   //----Mp3 play----
-// myDFPlayer.next();  //Play next mp3
-// delay(1000);
+//  myDFPlayer.next();  //Play next mp3
+//  delay(500);
 // myDFPlayer.previous();  //Play previous mp3
-// delay(1000);
-  myDFPlayer.play(1);  //Play the first mp3
- delay(1000);
+// delay(500);
+ myDFPlayer.play(3);  //Play the first mp3
+//  delay(500);
 // myDFPlayer.loop(1);  //Loop the first mp3
-//  delay(1000);
+//  delay(500);
 // myDFPlayer.pause();  //pause the mp3
 //  delay(1000);
 // myDFPlayer.start();  //start the mp3 from the pause
 //  delay(1000);
 
   //----Read imformation----
+  Serial.print("State: "); //read mp3 state
   Serial.println(myDFPlayer.readState()); //read mp3 state
+  Serial.print("readVolume: "); 
   Serial.println(myDFPlayer.readVolume()); //read current volume
+  Serial.print("readEQ: "); 
   Serial.println(myDFPlayer.readEQ()); //read EQ setting
-  Serial.println(myDFPlayer.readFileCounts()); //read all file counts in SD card
-  Serial.println(myDFPlayer.readCurrentFileNumber()); //read current play file number
+  Serial.print("readFolderCounts: "); 
+  Serial.println(myDFPlayer.readFolderCounts()); //read all file counts in SD card
+  Serial.print("readCurrentFileNumber: "); 
+  Serial.println(myDFPlayer.readCurrentFileNumber()); //read all file counts in SD card
+  Serial.print("readFileCounts: "); 
+  maxFiles = myDFPlayer.readFileCounts();
+  Serial.println(maxFiles); //read current play file number
 }
 
 void loop()
-{
-  static unsigned long timer = millis();
+{  
+  // for (int tem = 0; tem < maxFiles; tem++)
+  // {
+  //   myDFPlayer.next();  //Play next mp3
+  //   delay(500);
+  //   Serial.print("readCurrentFileNumber: "); 
+  //   Serial.println(myDFPlayer.readCurrentFileNumber()); //read all file counts in SD card
+  // }
+  // while(true){;}
   
-  if (millis() - timer > 30000) {
-    timer = millis();
-    index+=1;
-    myDFPlayer.next();  //Play next mp3 every 3 second.
-    delay(1000);
-  }
   
   if (myDFPlayer.available()) {
     printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.

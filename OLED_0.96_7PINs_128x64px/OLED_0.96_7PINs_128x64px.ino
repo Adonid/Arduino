@@ -81,9 +81,9 @@ char *time_working_date[][5] = {
   {0, 0, 18, "Ha Co", 7},
   {0, 0, 19, "Xem thoi su", 8},
   
-  {30, 43, 10, "PHUONG ANH 1", 1},
-  {30, 45, 10, "PHUONG ANH 2", 4},
-  {30, 47, 10, "PHUONG ANH 3", 3},
+  {30, 7, 9, "PHUONG ANH 1", 1},
+  {30, 8, 9, "PHUONG ANH 2", 4},
+  {30, 9, 9, "PHUONG ANH 3", 3},
 };
 
 // Mang is a date off - Ngay chi dinh nghi - ngay le. localNoteArray = 2
