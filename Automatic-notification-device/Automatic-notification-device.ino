@@ -52,34 +52,30 @@ Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 #define DS1302_DAT   8  // DATA
 #define DS1302_CLK   7  // SCK, CLK
 virtuabotixRTC myRTC(DS1302_CLK, DS1302_DAT, DS1302_RESET);
-char *day_s[] = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satuday"};
+char *day_s[] = {"", "CHU NHAT", "THU 2", "THU 3", "THU 4", "THU 5", "THU 6", "THU 7"};
 
 // Mang is a working date - Ngay chi dinh lam viec - ngay lam bu. localNoteArray = 0
 char *working_date[][4] = {
-  {0, 0, 0, "Lam viec"},
+  {0, 0, 0, "LAM VIEC"},
 };
 
 // Mang is hour working date - Gio ngay chi dinh lam viec - gio ngay lam bu. localNoteArray = 1
 char *time_working_date[][5] = {
-  {0, 30, 5, "BT sang", 1},
-  {0, 10, 6, "An sang", 2},
-  {0, 0, 7, "Lam viec sang", 3},
-  {0, 0, 11, "Het lam viec", 4},
-  {0, 10, 11, "An trua", 2},
-  {0, 15, 13, "BT chieu", 1},
-  {0, 30, 13, "Lam viec chieu", 3},
-  {0, 30, 16, "Het lam viec", 4},
-  {0, 30, 17, "An chieu", 2},
-  {0, 45, 20, "Diem danh", 5},
-  // TEST
-  // {20, 17, 14, "PHUONG ANH 5", 5},
-  // {20, 18, 14, "PHUONG ANH 1", 1},
-  // {20, 19, 14, "PHUONG ANH 3", 3},
+  {0, 30, 5, "BT SANG", 1},
+  {0, 10, 6, "AN SANG", 2},
+  {0, 0, 7, "LAM VIEC SANG", 3},
+  {0, 0, 11, "HET LAM VIEC", 4},
+  {0, 10, 11, "AN TRUA", 2},
+  {0, 15, 13, "BT CHIEU", 1},
+  {0, 30, 13, "LAM VIEC CHIEU", 3},
+  {0, 30, 16, "HET LAM VIEC", 4},
+  {0, 10, 18, "AN CHIEU", 2},
+  {0, 45, 20, "DIEM DANH", 5}
 };
 
 // Mang is a date off - Ngay chi dinh nghi - ngay le. localNoteArray = 2
 char *date_off[][4] = {
-  {0, 0, 0, "Ngay nghi"},
+  {0, 0, 0, "NGAY NGHI"},
   {30, 4, 2021, "NGHI LE"},
   {3, 5, 2021, "NGHI BU 1/5"},
   {2, 9, 2021, "QUOC KHANH"},
@@ -88,16 +84,17 @@ char *date_off[][4] = {
 };
 // Mang is hour date off - Gio ngay chi dinh nghi - gio ngay le. localNoteArray = 3
 char *time_date_off[][5] = {
-  {0, 0, 6, "BT sang", 1},
-  {0, 0, 14, "BT chieu", 1},
-  {0, 30, 6, "An sang", 2},
-  {0, 30, 10, "An trua", 2},
-  {0, 30, 17, "An chieu", 2},
-  {0, 45, 20, "Diem danh", 5},
-  // TEST
-  {10, 50, 18, "Test1", "5"},
-  {20, 50, 19, "Test2", "5"},
-  {30, 50, 20, "Test3", "5"},
+  {0, 0, 6, "BT SANG", 1},
+  {0, 0, 14, "BT CHIEU", 1},
+  {0, 30, 6, "AN SANG", 2},
+  {0, 30, 10, "AN TRUA", 2},
+  {0, 30, 17, "AN CHIEU", 2},
+  {0, 45, 20, "DIEM DANH", 5},
+  //TEST
+  {20, 28, 8, "PHUONG ANH 1", 1},
+  {20, 33, 8, "PHUONG ANH 3", 3},
+  {20, 38, 8, "PHUONG ANH 4", 4},
+  {20, 43, 8, "PHUONG ANH 5", 5},
 };
 
 // Functions
@@ -109,7 +106,12 @@ int is_broadcast_time_date_off(int seconds, int minute, int hour);
 void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmonth, int month, int year, int note, int localNoteArray);
 // end functions
 
-int maxFiles = 0;
+// CONST INDEX
+size_t size_working_date = sizeof(working_date)/sizeof(working_date[0]);
+size_t size_time_working_date = sizeof(time_working_date)/sizeof(time_working_date[0]);
+size_t size_date_off = sizeof(date_off)/sizeof(date_off[0]);
+size_t size_time_date_off = sizeof(time_date_off)/sizeof(time_date_off[0]);
+// end
 
 void setup() {
   mySoftwareSerial.begin(9600);
@@ -138,8 +140,6 @@ void setup() {
 //  myDFPlayer.outputDevice(DFPLAYER_DEVICE_U_DISK);
   myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
   delay(500); 
-
-  maxFiles = myDFPlayer.readFileCounts(); 
     
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC)) {
@@ -153,7 +153,7 @@ void setup() {
   // Clear the buffer
   display.clearDisplay();
   // Dat thoi gian ban dau
-  // Lech 28s
+  // NAP TRUOC 28s so voi thoi gian thuc
   // myRTC.setDS1302Time(50, 38, 14, 5, 29, 4, 2021);
 }
 
@@ -176,21 +176,21 @@ void loop() {
   // Neu la 2-6
   if(is_days){
     // Roi vao ngay nghi khong
-    int index_off = is_a_date_off(dayofmonth, month, year);
+    int index_off_1 = is_a_date_off(dayofmonth, month, year);
     // Nghi thoi !
-    if(index_off != -1){
+    if(index_off_1 != -1){
       // Toi gio phat bao chua
-      int is_broadcast = is_broadcast_time_date_off(seconds, minutes, hours);
+      int is_broadcast_1 = is_broadcast_time_date_off(seconds, minutes, hours);
       // PHAT BAO
-      if(is_broadcast != -1){
+      if(is_broadcast_1 != -1){
         indexPlay = 3;
         localNoteArray=3;
-        note = is_broadcast;
+        note = is_broadcast_1;
       }
       // Khong phat
       else{
         indexPlay = -1;
-        note = index_off;
+        note = index_off_1;
         localNoteArray=2;
       }
       
@@ -198,12 +198,12 @@ void loop() {
     // Di lam thoi !
     else{
       // Toi gio phat bao chua
-      int is_broadcast = is_broadcast_time_working_date(seconds, minutes, hours);
+      int is_broadcast_2 = is_broadcast_time_working_date(seconds, minutes, hours);
       // PHAT BAO
-      if(is_broadcast != -1){
+      if(is_broadcast_2 != -1){
         indexPlay = 1;
         localNoteArray=1;
-        note = is_broadcast;
+        note = is_broadcast_2;
       }
       // 
       else{
@@ -216,21 +216,21 @@ void loop() {
   // Neu la 7,CN
   else{
     // Roi vao ngay lam viec bu khong
-    int index_work = is_a_working_date(dayofmonth, month, year);
+    int index_work_1 = is_a_working_date(dayofmonth, month, year);
     // Di lam thoi !
-    if(index_work != -1){
+    if(index_work_1 != -1){
       // Toi gio phat bao chua
-      int is_broadcast = is_broadcast_time_working_date(seconds, minutes, hours);
+      int is_broadcast_3 = is_broadcast_time_working_date(seconds, minutes, hours);
       // PHAT BAO
-      if(is_broadcast != -1){
+      if(is_broadcast_3 != -1){
         indexPlay = 1;
         localNoteArray=1;
-        note = is_broadcast;
+        note = is_broadcast_3;
       }
       // Khong phat
       else{
         indexPlay = -1;
-        note = index_work;
+        note = index_work_1;
         localNoteArray=0;
       }
       
@@ -238,12 +238,12 @@ void loop() {
     // Nghi thoi !
     else{
       // Toi gio phat bao chua
-      int is_broadcast = is_broadcast_time_date_off(seconds, minutes, hours);
+      int is_broadcast_4 = is_broadcast_time_date_off(seconds, minutes, hours);
       // PHAT BAO
-      if(is_broadcast != -1){
+      if(is_broadcast_4 != -1){
         indexPlay = 3;
         localNoteArray=3;
-        note = is_broadcast;
+        note = is_broadcast_4;
       }
       // 
       else{
@@ -255,23 +255,18 @@ void loop() {
   }
 
   // SHow thoi gian
-displayTime(seconds, minutes, hours, dayofweek, dayofmonth, month, year, note, localNoteArray);
+  displayTime(seconds, minutes, hours, dayofweek, dayofmonth, month, year, note, localNoteArray);
 
   // Phat nhac khong
-  switch (indexPlay)
-  {
-  case 1:
-    int nextFile1 = time_working_date[note][4];
-    myDFPlayer.play(nextFile1);
-    break;
-  
-  case 3:
-    int nextFile2 = time_date_off[note][4];
-    myDFPlayer.play(nextFile2);
-    break;
-  
-  default:
-    break;
+  if(indexPlay==1){
+    int songLocal1 = time_working_date[note][4];
+    myDFPlayer.play(songLocal1);
+    delay(800);
+  }
+  if(indexPlay==3){
+    int songLocal2 = time_date_off[note][4];
+    myDFPlayer.play(songLocal2);
+    delay(800);
   }
 }
 
@@ -280,7 +275,7 @@ bool what_is_default_days(int today){
   {
   case 2: case 3: case 4: case 5: case 6:
     return true;
-  case 0: case 7:
+  case 1: case 7:
     return false;
   default:
     return false;
@@ -288,7 +283,6 @@ bool what_is_default_days(int today){
 }
 
 int is_a_working_date(int date, int mouth, int year){
-  size_t size_working_date = sizeof(working_date)/sizeof(working_date[0]);
   int note = -1;
   for (int i = 0; i < size_working_date; i++)
   {
@@ -301,7 +295,6 @@ int is_a_working_date(int date, int mouth, int year){
 }
 
 int is_broadcast_time_working_date(int seconds, int minute, int hour){
-  size_t size_time_working_date = sizeof(time_working_date)/sizeof(time_working_date[0]);
   int note = -1;
   for (int i = 0; i < size_time_working_date; i++)
   {
@@ -314,29 +307,27 @@ int is_broadcast_time_working_date(int seconds, int minute, int hour){
 }
 
 int is_a_date_off(int date, int mouth, int year){
-  size_t size_date_off = sizeof(date_off)/sizeof(date_off[0]);
-  int note = -1;
+  int note3 = -1;
   for (int i = 0; i < size_date_off; i++)
   {
     if(date_off[i][0]==date && date_off[i][1]==mouth && date_off[i][2]==year){
-      note = i;
+      note3 = i;
       break;
     }
   }
-  return note;
+  return note3;
 }
 
 int is_broadcast_time_date_off(int seconds, int minute, int hour){
-  size_t size_time_date_off = sizeof(time_date_off)/sizeof(time_date_off[0]);
-  int note = -1;
+  int note4 = -1;
   for (int i = 0; i < size_time_date_off; i++)
   {
     if(time_date_off[i][0]==seconds && time_date_off[i][1]==minute && time_date_off[i][2]==hour){
-      note = i;
+      note4 = i;
       break;
     }
   }
-  return note;
+  return note4;
 }
 
 // Show time
