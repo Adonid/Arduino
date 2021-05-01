@@ -1,21 +1,22 @@
 /**************************************************************************
- This is an example for our Monochrome OLEDs based on SSD1306 drivers
+ This is an application in plance AUTOMATIC BROADCAST DEVICE
 
- Pick one up today in the adafruit shop!
- ------> http://www.adafruit.com/category/63_98
+ Pick four main modules:
+ 1. Arduino nano v3.0
+ 2. RTC DS1307 | DS1302 | DS3231
+ 3. OLED 0.96 inch 128x64 pixcel
+ 4. DFPlayer mini
 
- This example is for a 128x64 pixel display using SPI to communicate
- 4 or 5 pins are required to interface.
+ and eight dependencies modules
+ 1. Amplyfier PAM-8403
+ 2. Loudspeack 4omh-5w
+ 3. 1 MicroSD(512 Mb) maximum 32Gb
+ 4. 12V DC --> 3.3v 5v 12v converter
+ 5. Adapter 12v DC
+ 6. Wire
+ 7. Bearboard
+ 8. 1 register 1K ohms. brown-black-red
 
- Adafruit invests time and resources providing this open
- source code, please support Adafruit and open-source
- hardware by purchasing products from Adafruit!
-
- Written by Limor Fried/Ladyada for Adafruit Industries,
- with contributions from the open source community.
- BSD license, check license.txt for more information
- All text above, and the splash screen below must be
- included in any redistribution.
  **************************************************************************/
 
 #include <SPI.h>
@@ -31,7 +32,6 @@
 // Khoi tao danh cho DFPLAYER MINI
 SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
-//void printDetail(uint8_t type, int value);
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -71,7 +71,6 @@ char *time_working_date[][5] = {
   {0, 30, 16, "HET LAM VIEC", 4},
   {0, 10, 18, "AN CHIEU", 2},
   {0, 45, 20, "DIEM DANH", 5},
-  {0, 30, 21, "NGU NGHI", 6},
 };
 
 // Mang is a date off - Ngay chi dinh nghi - ngay le. localNoteArray = 2
@@ -91,13 +90,12 @@ char *time_date_off[][5] = {
   {0, 30, 10, "AN TRUA", 2},
   {0, 30, 17, "AN CHIEU", 2},
   {0, 45, 20, "DIEM DANH", 5},
-  {0, 0, 22, "NGU NGHI", 6},
   //TEST
   {0, 36, 17, "PHUONG ANH 2", 2},
 };
 
 // Mang chua ngay toi da trong nam mac dinh: 1 --> 12. Rieng thang 2 can phai kiem tra nam nhuan: nhuan=29, ko nhuan=28
-char *date_of_mouth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int *date_of_mouth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 // Functions
 bool what_is_default_days(int today);
