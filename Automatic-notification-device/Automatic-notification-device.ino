@@ -70,7 +70,8 @@ char *time_working_date[][5] = {
   {0, 30, 13, "LAM VIEC CHIEU", 3},
   {0, 30, 16, "HET LAM VIEC", 4},
   {0, 10, 18, "AN CHIEU", 2},
-  {0, 45, 20, "DIEM DANH", 5}
+  {0, 45, 20, "DIEM DANH", 5},
+  {0, 30, 21, "NGU NGHI", 6},
 };
 
 // Mang is a date off - Ngay chi dinh nghi - ngay le. localNoteArray = 2
@@ -90,12 +91,13 @@ char *time_date_off[][5] = {
   {0, 30, 10, "AN TRUA", 2},
   {0, 30, 17, "AN CHIEU", 2},
   {0, 45, 20, "DIEM DANH", 5},
+  {0, 0, 22, "NGU NGHI", 6},
   //TEST
-  {20, 28, 8, "PHUONG ANH 1", 1},
-  {20, 33, 8, "PHUONG ANH 3", 3},
-  {20, 38, 8, "PHUONG ANH 4", 4},
-  {20, 43, 8, "PHUONG ANH 5", 5},
+  {0, 36, 17, "PHUONG ANH 2", 2},
 };
+
+// Mang chua ngay toi da trong nam mac dinh: 1 --> 12. Rieng thang 2 can phai kiem tra nam nhuan: nhuan=29, ko nhuan=28
+char *date_of_mouth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 // Functions
 bool what_is_default_days(int today);
@@ -104,6 +106,9 @@ int is_broadcast_time_working_date(int seconds, int minute, int hour);
 int is_a_date_off(int date, int mouth, int year);
 int is_broadcast_time_date_off(int seconds, int minute, int hour);
 void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmonth, int month, int year, int note, int localNoteArray);
+void check_leap_year(int year);
+int is_tomorrow_off(int dayofmonth, int month, int year);
+int is_go_to_sleep(int seconds, int minute, int hour, int dayofmonth, int month, int year);
 // end functions
 
 // CONST INDEX
@@ -112,6 +117,9 @@ size_t size_time_working_date = sizeof(time_working_date)/sizeof(time_working_da
 size_t size_date_off = sizeof(date_off)/sizeof(date_off[0]);
 size_t size_time_date_off = sizeof(time_date_off)/sizeof(time_date_off[0]);
 // end
+
+// VI TRI BAN NHAC DI NGU
+const int sleep_song = 6;
 
 void setup() {
   mySoftwareSerial.begin(9600);
@@ -127,7 +135,7 @@ void setup() {
   delay(500);
   
   //----Set volume----
-  myDFPlayer.volume(15);  //Set volume value (0~30).
+  myDFPlayer.volume(25);  //Set volume value (0~30).
   delay(500);
 //  myDFPlayer.volumeUp(); //Volume Up
 //  myDFPlayer.volumeDown(); //Volume Down
@@ -153,8 +161,8 @@ void setup() {
   // Clear the buffer
   display.clearDisplay();
   // Dat thoi gian ban dau
-  // NAP TRUOC 28s so voi thoi gian thuc
-  // myRTC.setDS1302Time(50, 38, 14, 5, 29, 4, 2021);
+  // NAP TRUOC 24s so voi thoi gian thuc
+  // myRTC.setDS1302Time(44, 57, 11, 7, 1, 5, 2021);
 }
 
 void loop() {
@@ -268,6 +276,13 @@ void loop() {
     myDFPlayer.play(songLocal2);
     delay(800);
   }
+
+  // Kiem tra gio DI NGU
+  if(is_go_to_sleep(seconds, minutes, hours, dayofmonth, month, year) != -1){
+    myDFPlayer.play(sleep_song);
+    delay(800);
+  }
+
 }
 
 bool what_is_default_days(int today){
@@ -395,4 +410,48 @@ void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmo
 
   display.display();
   delay(100);
+}
+
+void check_leap_year(int year){
+  // Nnam nhuan -> thang 2 la 29 ngay
+  if (year % 4)
+    date_of_mouth[1] = 28;
+  else
+    date_of_mouth[1] = 29;
+}
+
+// Ngay mai co phai la ngay nghi
+int is_tomorrow_off(int dayofmonth, int month, int year){
+  int new_date = dayofmonth + 1;
+  // Ngay hom sau van nam trong thang nay
+  if(new_date <= date_of_mouth[month-1]){
+    return is_a_date_off(new_date, month, year);
+  }
+  // Qua thang moi
+  else{
+    new_date = 1;
+    int new_mouth = month + 1;
+    // Van trong nam nay
+    if(new_mouth <= 12)
+      return is_a_date_off(new_date, new_mouth, year);
+    // Qua nam roi
+    else
+      return is_a_date_off(new_date, new_mouth, year + 1);
+  }
+}
+
+// Kiem tra gio di ngu. Kiem tra 2 thoi diem trong ngay. 21:30:0 & 22:0:0
+int is_go_to_sleep(int seconds, int minute, int hour, int dayofmonth, int month, int year){
+  // Di ngu neu mai la ngay LAM VIEC
+  if(seconds == 0 && minute == 30 && hour== 21){
+    check_leap_year(year);
+    return is_tomorrow_off(dayofmonth, month, year);
+  }
+  // Di ngu neu mai la ngay NGHI
+  if(seconds == 0 && minute == 0 && hour== 22){
+    check_leap_year(year);
+    return is_tomorrow_off(dayofmonth, month, year);
+  }
+  // Nothing
+  return -1;
 }
