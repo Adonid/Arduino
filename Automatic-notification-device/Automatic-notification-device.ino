@@ -76,11 +76,34 @@ char *time_working_date[][5] = {
 // Mang is a date off - Ngay chi dinh nghi - ngay le. localNoteArray = 2
 char *date_off[][4] = {
   {0, 0, 0, "NGAY NGHI"},
+  /*  NAM 2021 */
+  // NGHI LE GIAI PHONG MN & QUOC TET LAO DONG
   {30, 4, 2021, "NGHI LE"},
   {3, 5, 2021, "NGHI BU 1/5"},
+  // NGAY QUOC KHANH
   {2, 9, 2021, "QUOC KHANH"},
   {3, 9, 2021, "QUOC KHANH"},
+
+  /*  NAM 2022 */
+  // NGHI TET DUONG
   {3, 1, 2022, "NGHI BU 1/1"},
+  // NGHI TET NGUYEN DAN
+  {30, 1, 2022, "NGHI TET"},
+  {31, 1, 2022, "NGHI TET"},
+  {1, 2, 2022, "MONG 1 TET"},
+  {2, 2, 2022, "MONG 2 TET"},
+  {3, 2, 2022, "MONG 3 TET"},
+  {4, 2, 2022, "NGHI TET"},
+  {5, 2, 2022, "NGHI TET"},
+  {6, 2, 2022, "NGHI TET"},
+  // NGHI GIO TO HV
+  {10, 4, 2022, "NGAY GIO TO"},
+  // NGHI LE GIAI PHONG MN & QUOC TET LAO DONG
+  {2, 5, 2022, "NGHI BU 30/4"},
+  {3, 5, 2022, "NGHI BU 1/5"}, 
+  // NGAY QUOC KHANH
+  {1, 9, 2022, "NGHI LE"},
+  {2, 9, 2022, "QUOC KHANH"},
 };
 // Mang is hour date off - Gio ngay chi dinh nghi - gio ngay le. localNoteArray = 3
 char *time_date_off[][5] = {
