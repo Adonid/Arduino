@@ -68,7 +68,7 @@ char *time_working_date[][5] = {
   {0, 10, 11, "AN TRUA", 2},
   {0, 15, 13, "BT CHIEU", 1},
   {0, 30, 13, "LAM VIEC CHIEU", 3},
-  {0, 30, 16, "HET LAM VIEC", 4},
+  {0, 30, 17, "HET LAM VIEC", 4},
   {0, 10, 18, "AN CHIEU", 2},
   {0, 45, 20, "DIEM DANH", 5},
 };
