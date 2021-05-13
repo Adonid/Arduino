@@ -1,4 +1,4 @@
-/**************************************************************************
+  /**************************************************************************
  This is an application in plance AUTOMATIC BROADCAST DEVICE
 
  Pick four main modules:
@@ -69,7 +69,7 @@ char *time_working_date[][5] = {
   {0, 15, 13, "BT CHIEU", 1},
   {0, 30, 13, "LAM VIEC CHIEU", 3},
   {0, 30, 17, "HET LAM VIEC", 4},
-  {0, 10, 18, "AN CHIEU", 2},
+  {0, 0, 18, "AN CHIEU", 2},
   {0, 45, 20, "DIEM DANH", 5},
 };
 
@@ -112,9 +112,7 @@ char *time_date_off[][5] = {
   {0, 30, 6, "AN SANG", 2},
   {0, 30, 10, "AN TRUA", 2},
   {0, 30, 17, "AN CHIEU", 2},
-  {0, 45, 20, "DIEM DANH", 5},
-  //TEST
-  // {20, 30, 20, "PHUONG ANH 7", 7},
+  {0, 45, 20, "DIEM DANH", 5}
 };
 
 // Mang chua ngay toi da trong nam mac dinh: 1 --> 12. Rieng thang 2 can phai kiem tra nam nhuan: nhuan=29, ko nhuan=28
@@ -140,7 +138,7 @@ size_t size_time_date_off = sizeof(time_date_off)/sizeof(time_date_off[0]);
 // VI TRI CAC BAN
 // const int getup_song    = 1; // NHAC BAO THUC
 // const int eat_song      = 2; // NHAC AN COM
-// const int working_song  = 3; // NHAC LAM VIEC
+const int working_song  = 3; // NHAC LAM VIEC
 // const int end_work_song = 4; // NHAC HET LAM VIEC
 // const int check_song    = 5; // NHAC DIEM DANH
 const int sleep_song    = 6; // NHAC DI NGU
@@ -186,7 +184,7 @@ void setup() {
   display.clearDisplay();
   // Dat thoi gian ban dau
   // NAP TRUOC 24s so voi thoi gian thuc
-  // myRTC.setDS1302Time(44, 57, 11, 7, 1, 5, 2021);
+//   myRTC.setDS1302Time(0, 25, 8, 4, 12, 5, 2021);
 }
 
 void loop() {
@@ -299,6 +297,15 @@ void loop() {
     int songLocal2 = time_date_off[note][4];
     myDFPlayer.play(songLocal2);
     delay(800);
+  }
+
+  // Di ngu neu mai la ngay NGHI THI NGHI LA, VIEC TOI
+  if(seconds == 0 && minutes == 0 && hours== 19){
+    bool is_working_tonight = is_tomorrow_off(dayofweek, dayofmonth, month, year);
+    if(!is_working_tonight){
+      myDFPlayer.play(working_song);
+      delay(800);
+    }
   }
 
   // Kiem tra gio di ngu. Kiem tra 2 thoi diem trong ngay. 21:30:0 & 22:0:0
