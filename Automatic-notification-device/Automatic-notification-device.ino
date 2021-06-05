@@ -328,6 +328,20 @@ void loop() {
 }
 
 bool what_is_default_days(int today){
+  /* doan code nay co la do chuong trinh CHUNG TOI LA CHIEN SY thay doi gio phat song toi 11h ngay T7 moi nghi roi moi duoc an com*/
+  if(today==7){
+    // 11:00:00
+    time_date_off[3][1]=0;
+    time_date_off[3][2]=11;
+  }
+  else
+  {
+    // 10:30:00
+    time_date_off[3][1]=30;
+    time_date_off[3][2]=10;
+  }
+  
+  /* Het code ep buoc !!!*/
   switch (today)
   {
   case 2: case 3: case 4: case 5: case 6:
