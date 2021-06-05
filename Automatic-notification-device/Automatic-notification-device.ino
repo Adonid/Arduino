@@ -184,7 +184,7 @@ void setup() {
   display.clearDisplay();
   // Dat thoi gian ban dau
   // NAP TRUOC 24s so voi thoi gian thuc
-//   myRTC.setDS1302Time(0, 25, 8, 4, 12, 5, 2021);
+//  myRTC.setDS1302Time(10, 20, 11, 6, 28, 5, 2021);
 }
 
 void loop() {
@@ -284,9 +284,6 @@ void loop() {
     }
   }
 
-  // SHow thoi gian
-  displayTime(seconds, minutes, hours, dayofweek, dayofmonth, month, year, note, localNoteArray);
-
   // Phat nhac khong
   if(indexPlay==1){
     int songLocal1 = time_working_date[note][4];
@@ -326,6 +323,8 @@ void loop() {
     }
   }
 
+  // SHow thoi gian
+  displayTime(seconds, minutes, hours, dayofweek, dayofmonth, month, year, note, localNoteArray);
 }
 
 bool what_is_default_days(int today){
@@ -402,8 +401,7 @@ void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmo
   minute_string = minutes<10 ? "0"+minute_string : minute_string;
   month_string = month<10 ? "0"+month_string : month_string;
   dayofmonth_string = dayofmonth<10 ? "0"+dayofmonth_string : dayofmonth_string;
-
-  delay(100);    
+  delay(100);
   display.clearDisplay();
 
   display.setTextSize(1);             // Normal 1:1 pixel scale
