@@ -63,7 +63,7 @@ char *working_date[][4] = {
 char *time_working_date[][5] = {
   {0, 30, 5, "BT SANG", 1},
   {0, 10, 6, "AN SANG", 2},
-  {0, 0, 7, "LAM VIEC SANG", 3},
+  {0, 0, 7, "LAM VIEC SANG", 3}, 
   {0, 0, 11, "HET LAM VIEC", 4},
   {0, 10, 11, "AN TRUA", 2},
   {0, 15, 13, "BT CHIEU", 1},
