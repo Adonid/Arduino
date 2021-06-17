@@ -1,9 +1,9 @@
 /***************************************************
- DFPlayer - A Mini MP3 Player For Arduino
+DFPlayer - A Mini MP3 Player For Arduino
  <https://www.dfrobot.com/product-1121.html>
  
  ***************************************************
- This example shows the all the function of library for DFPlayer.
+ This example shows the basic function of library for DFPlayer.
  
  Created 2016-12-07
  By [Angelo qiao](Angelo.qiao@dfrobot.com)
@@ -15,7 +15,7 @@
 
 /***********Notice and Trouble shooting***************
  1.Connection and Diagram can be found here
-<https://www.dfrobot.com/wiki/index.php/DFPlayer_Mini_SKU:DFR0299#Connection_Diagram>
+ <https://www.dfrobot.com/wiki/index.php/DFPlayer_Mini_SKU:DFR0299#Connection_Diagram>
  2.This code is tested on Arduino Uno, Leonardo, Mega boards.
  ****************************************************/
 
@@ -23,11 +23,9 @@
 #include "SoftwareSerial.h"
 #include "DFRobotDFPlayerMini.h"
 
-SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
+SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
-
-int maxFiles = 0;
 
 void setup()
 {
@@ -42,84 +40,41 @@ void setup()
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
-    while(true);
+    while(true){
+      delay(0); // Code to compatible with ESP8266 watch dog.
+    }
   }
   Serial.println(F("DFPlayer Mini online."));
   
-  myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
-  delay(500);
-  
-  //----Set volume----
-  myDFPlayer.volume(25);  //Set volume value (0~30).
-  delay(500);
-//  myDFPlayer.volumeUp(); //Volume Up
-//  myDFPlayer.volumeDown(); //Volume Down
-  
-  //----Set different EQ----
-  myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
-  delay(500);
-//  myDFPlayer.EQ(DFPLAYER_EQ_POP);
-//  myDFPlayer.EQ(DFPLAYER_EQ_ROCK);
-//  myDFPlayer.EQ(DFPLAYER_EQ_JAZZ);
-//  myDFPlayer.EQ(DFPLAYER_EQ_CLASSIC);
-//  myDFPlayer.EQ(DFPLAYER_EQ_BASS);
-  
-  //----Set device we use SD as default----
-//  myDFPlayer.outputDevice(DFPLAYER_DEVICE_U_DISK);
-  myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
-  delay(500);
-//  myDFPlayer.outputDevice(DFPLAYER_DEVICE_AUX);
-//  myDFPlayer.outputDevice(DFPLAYER_DEVICE_SLEEP);
-//  myDFPlayer.outputDevice(DFPLAYER_DEVICE_FLASH);
-  
-  //----Mp3 control----
-//  myDFPlayer.sleep();     //sleep
-//  myDFPlayer.reset();     //Reset the module
-//  myDFPlayer.enableDAC();  //Enable On-chip DAC
-//  myDFPlayer.disableDAC();  //Disable On-chip DAC
-//  myDFPlayer.outputSetting(true, 15); //output setting, enable the output and set the gain to 15
-  
-  //----Mp3 play----
-//  myDFPlayer.next();  //Play next mp3
-//  delay(500);
-// myDFPlayer.previous();  //Play previous mp3
-// delay(500);
- myDFPlayer.play(3);  //Play the first mp3
-//  delay(500);
-// myDFPlayer.loop(1);  //Loop the first mp3
-//  delay(500);
-// myDFPlayer.pause();  //pause the mp3
-//  delay(1000);
-// myDFPlayer.start();  //start the mp3 from the pause
-//  delay(1000);
-
-  //----Read imformation----
-  Serial.print("State: "); //read mp3 state
-  Serial.println(myDFPlayer.readState()); //read mp3 state
-  Serial.print("readVolume: "); 
-  Serial.println(myDFPlayer.readVolume()); //read current volume
-  Serial.print("readEQ: "); 
-  Serial.println(myDFPlayer.readEQ()); //read EQ setting
-  Serial.print("readFolderCounts: "); 
-  Serial.println(myDFPlayer.readFolderCounts()); //read all file counts in SD card
-  Serial.print("readCurrentFileNumber: "); 
-  Serial.println(myDFPlayer.readCurrentFileNumber()); //read all file counts in SD card
-  Serial.print("readFileCounts: "); 
-  maxFiles = myDFPlayer.readFileCounts();
-  Serial.println(maxFiles); //read current play file number
+  myDFPlayer.volume(5);  //Set volume value. From 0 to 30
 }
 
 void loop()
-{  
-  // for (int tem = 0; tem < maxFiles; tem++)
-  // {
-  //   myDFPlayer.next();  //Play next mp3
-  //   delay(500);
-  //   Serial.print("readCurrentFileNumber: "); 
-  //   Serial.println(myDFPlayer.readCurrentFileNumber()); //read all file counts in SD card
-  // }
-  // while(true){;}
-  
+{
+  myDFPlayer.play(1);  //Play the first mp3
+  Serial.println(F("Bao thuc"));
+  delay(30000);
+  Serial.println(F("Het bao thuc"));
+  myDFPlayer.play(2);  //Play the first mp3
+  Serial.println(F("An com"));
+  delay(30000);
+  Serial.println(F("Het an com"));
+  myDFPlayer.play(3);  //Play the first mp3
+  Serial.println(F("Lam viec"));
+  delay(30000);
+  Serial.println(F("Het lam viec"));
+  myDFPlayer.play(4);  //Play the first mp3
+  Serial.println(F("Het lam viec"));
+  delay(30000);
+  Serial.println(F("Het het lam viec"));
+  myDFPlayer.play(5);  //Play the first mp3
+  Serial.println(F("Diem danh"));
+  delay(30000);
+  Serial.println(F("Het diem danh"));
+  myDFPlayer.play(6);  //Play the first mp3
+  Serial.println(F("Ngu nghi"));
+  delay(30000);
+  Serial.println(F("Het ngu nghi"));
   
   if (myDFPlayer.available()) {
     printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.
