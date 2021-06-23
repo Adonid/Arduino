@@ -184,7 +184,7 @@ void setup() {
   display.clearDisplay();
   // Dat thoi gian ban dau
   // NAP TRUOC 24s so voi thoi gian thuc
-//  myRTC.setDS1302Time(10, 20, 11, 6, 28, 5, 2021);
+//  myRTC.setDS1302Time(30, 55, 10, 4, 23, 6, 2021);
 }
 
 void loop() {
