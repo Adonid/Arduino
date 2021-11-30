@@ -56,7 +56,7 @@ char *day_s[] = {"", "CHU NHAT", "THU 2", "THU 3", "THU 4", "THU 5", "THU 6", "T
 
 // Mang is a working date - Ngay chi dinh lam viec - ngay lam bu. localNoteArray = 0
 char *working_date[][4] = {
-  {0, 0, 0, "LAM VIEC"},
+  {0, 0, 0, "LAM VIEC"}
 };
 
 // Mang is hour working date - Gio ngay chi dinh lam viec - gio ngay lam bu. localNoteArray = 1
@@ -184,7 +184,7 @@ void setup() {
   display.clearDisplay();
   // Dat thoi gian ban dau
   // NAP TRUOC 24s so voi thoi gian thuc
-//  myRTC.setDS1302Time(30, 55, 10, 4, 23, 6, 2021);
+// myRTC.setDS1302Time(0, 46, 20, 6, 5, 11, 2021);
 }
 
 void loop() {

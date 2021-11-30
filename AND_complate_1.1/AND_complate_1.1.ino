@@ -31,7 +31,7 @@ DFRobotDFPlayerMini myDFPlayer;
 // Khoi tao DS3231
 RTC_DS3231 rtc;
 
-char *day_s[] = {"", "CHU NHAT", "THU 2", "THU 3", "THU 4", "THU 5", "THU 6", "THU 7"};
+char *day_s[] = {"CHU NHAT", "THU 2", "THU 3", "THU 4", "THU 5", "THU 6", "THU 7"};
 
 // Mang is a working date - Ngay chi dinh lam viec - ngay lam bu. localNoteArray = 0
 char *working_date[][4] = {
@@ -291,7 +291,7 @@ void loop() {
 
   // Kiem tra gio di ngu. Kiem tra 2 thoi diem trong ngay. 21:30:0 & 22:0:0
   // Di ngu neu mai la ngay LAM VIEC
-  if(seconds == 0 && minutes == 30 && hours== 21){
+  if(seconds == 0 && minutes == 50 && hours== 21){
     bool is_sleep1 = is_tomorrow_off(dayofweek, dayofmonth, month, year);
     if(!is_sleep1){
       myDFPlayer.play(sleep_song);
