@@ -149,7 +149,7 @@ void setup() {
     // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
 
-  // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+//   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   // END RTC
   
   Serial.println();
@@ -166,9 +166,11 @@ void setup() {
     }
   }
   Serial.println(F("DFPlayer Mini online."));
-  
+  // -- SET TIME OUT -- //
+  myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
+  delay(500);
   //----Set volume----//
-  myDFPlayer.volume(25);  //Set volume value (0~30).
+  myDFPlayer.volume(15);  //Set volume value (0~30).
 }
 
 void loop() {
@@ -291,7 +293,7 @@ void loop() {
 
   // Kiem tra gio di ngu. Kiem tra 2 thoi diem trong ngay. 21:30:0 & 22:0:0
   // Di ngu neu mai la ngay LAM VIEC
-  if(seconds == 0 && minutes == 50 && hours== 21){
+  if(seconds == 0 && minutes == 30 && hours== 21){
     bool is_sleep1 = is_tomorrow_off(dayofweek, dayofmonth, month, year);
     if(!is_sleep1){
       myDFPlayer.play(sleep_song);
@@ -404,12 +406,12 @@ void displayTime(int seconds, int minutes, int hours, int dayofweek, int dayofmo
   Serial.print(":");
   Serial.print(minutes);
   Serial.print(":");
-  Serial.print(seconds);
+  Serial.println(seconds);
 
-  Serial.println("Vi tri che de trong mang: ");
-  Serial.print(note);
-  Serial.println("Chi so cua mang phat ra: ");
-  Serial.print(localNoteArray);
+  Serial.print("Vi tri che de trong mang: ");
+  Serial.println(note);
+  Serial.print("Chi so cua mang phat ra: ");
+  Serial.println(localNoteArray);
 }
 
 // Ngay mai co phai la ngay nghi? NGHI = TRUE | LAM = FALSE
