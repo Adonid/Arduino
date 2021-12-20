@@ -62,7 +62,8 @@ char *date_off[][4] = {
   // NGAY QUOC KHANH
   {2, 9, 2021, "QUOC KHANH"},
   {3, 9, 2021, "QUOC KHANH"},
-
+  // NGAY THANH LAP DOI VN TUYEN TRUYEN GPQ
+  {22, 12, 2021, "THANH LAP QĐ"},
   /*  NAM 2022 */
   // NGHI TET DUONG
   {3, 1, 2022, "NGHI BU 1/1"},
